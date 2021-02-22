@@ -2,29 +2,54 @@
   <div class="about">
     <form @submit.prevent>
       <h1>Расчёт гранулометрического состава</h1>
-      <fieldset>
+      <div>
         <label for="min">Минимальный размер фракции</label>
-        <input type="number" id="min">
-      </fieldset>
+        <br/>
+        <input type="number" id="min" v-model="min" @blur="minBlur" >
+        <br>
+        <small v-if="minError">{{ minError }}</small>
+      </div>
 
-      <fieldset>
+
+      <div>
         <label for="max">Максимальный размер фракции</label>
-        <input type="number" id="max">
-      </fieldset>
+        <br/>
+        <input type="number" id="max" v-model="max" @blur="maxBlur" >
+        <br>
+        <small v-if="maxError">{{ maxError }}</small>
+      </div>
 
-      <button @click="" class="btn btn-success">Подобрать сита</button>
+      <div>
+        <label for="widthFraction">Является ли фракция широкой?</label>
+        <br>
+        <input type="checkbox" id="widthFraction">
+      </div>
 
+
+      <button @click="onSubmit" class="btn btn-success" :disabled="isSubmitting || isTooManyAttempts">Подобрать сита
+      </button>
+      <div v-if="isTooManyAttempts">Вы слишком часто жмякаете кнопку</div>
     </form>
+
+    <hr/>
+
+    <div>
+      <TableStoneTest/>
+    </div>
   </div>
 </template>
 <script>
+import {useStoneTestForm} from "@/use/stone-test-form";
+import TableStoneTest from "@/components/TableStoneTest";
+
 export default {
   setup() {
-  return {
-    submit: () => {
-
-    }
-  }
-  }
+    return {...useStoneTestForm()}
+  },
+  components: {TableStoneTest}
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>
